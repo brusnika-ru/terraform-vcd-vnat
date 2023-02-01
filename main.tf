@@ -1,11 +1,3 @@
-data "vcd_edgegateway" "edge1" {
-  name = var.vcd_edge_name
-}
-
-data "vcd_external_network" "external_network1" {
-  name = data.vcd_edgegateway.edge1.external_network.name
-}
-
 resource "vcd_nsxv_snat" "snat" {
   count = var.type == "snat" ? 1 : 0
 
