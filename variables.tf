@@ -3,11 +3,6 @@ variable "vcd_edge_name" {
   description = "The name of the edge gateway"
 }
 
-variable "net_name" {
-  type        = string
-  description = "Network name for NAT rule"
-}
-
 variable "description" {
   type        = string
   description = "An optional description of the NAT rule"
@@ -34,6 +29,12 @@ variable "type" {
 variable "ext_ip" {
   description = "IP address, range or subnet. IP addresses to which destination addresses on inbound packets will be translated. These addresses are the IP addresses of the one or more virtual machines for which you are configuring DNAT so that they can receive traffic from the external network"
   type        = string
+  default     = ""
+}
+
+variable "net_name" {
+  type        = string
+  description = "The name of the network on which to apply the SNAT/DNAT rule. Default external network of EDGE"
   default     = ""
 }
 
