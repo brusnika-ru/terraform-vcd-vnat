@@ -11,7 +11,7 @@ resource "vcd_nsxv_snat" "snat" {
 
   edge_gateway = var.vcd_edge_name
   network_type = "org"
-  network_name = var.net_name
+  network_name = var.net_name != "" ? var.net_name : data.vcd_external_network.external_network1.name
 
   original_address   = var.src_net
   translated_address = var.ext_ip != "" ? var.ext_ip : data.vcd_external_network.external_network1.ip_scope.0.static_ip_pool.0.start_address
@@ -22,7 +22,7 @@ resource "vcd_nsxv_dnat" "dnat" {
 
   edge_gateway = var.vcd_edge_name
   network_type = "ext"
-  network_name = var.net_name
+  network_name = var.net_name != "" ? var.net_name : data.vcd_external_network.external_network1.name
 
   enabled         = var.enabled != "" ? var.enabled : true
   logging_enabled = var.logging != "" ? var.logging : false
