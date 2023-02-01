@@ -41,6 +41,7 @@ variable "net_name" {
 variable "src_net" {
   type        = string
   description = "IP address, range or subnet. This address must be the public IP address of the edge gateway for which you are configuring the DNAT rule. In the packet being inspected, this IP address or range would be those that appear as the destination IP address of the packet. These packet destination addresses are the ones translated by this DNAT rule"
+  default     = ""
 }
 
 variable "src_port" {
