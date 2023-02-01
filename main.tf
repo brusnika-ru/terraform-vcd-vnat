@@ -2,7 +2,7 @@ resource "vcd_nsxv_snat" "snat" {
   count = var.type == "snat" ? 1 : 0
 
   edge_gateway = var.vcd_edge_name
-  network_type = "org"
+  network_type = "ext"
   network_name = var.net_name
 
   original_address   = var.src_net
