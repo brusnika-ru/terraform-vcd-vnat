@@ -1,29 +1,17 @@
-resource "vcd_nsxv_snat" "snat" {
-  count = var.type == "snat" ? 1 : 0
-
-  edge_gateway = var.vcd_edge_name
-  network_type = "ext"
-  network_name = var.net_name
-
-  original_address   = var.src_net
-  translated_address = var.ext_ip
+data "vcd_nsxt_edgegateway" "orgEdge" {
+  name     = var.vcd_edge_name
 }
 
-resource "vcd_nsxv_dnat" "dnat" {
-  count = var.type == "dnat" ? 1 : 0
-
-  edge_gateway = var.vcd_edge_name
-  network_type = "ext"
-  network_name = var.net_name
-
-  enabled         = var.enabled != "" ? var.enabled : true
-  logging_enabled = var.logging != "" ? var.logging : false
-  description     = var.description
-
-  original_address = var.ext_ip
-  original_port    = var.src_port
-
-  translated_address = var.dst_net
-  translated_port    = var.dst_port
-  protocol           = var.proto != "" ? var.proto : "tcp"
+# Создание NAT правила
+resource "vcd_nsxt_nat_rule" "nat" {
+  edge_gateway_id          = data.vcd_nsxt_edgegateway.orgEdge.id
+  name                     = var.name
+  description              = var.description
+  enabled                  = var.state
+  rule_type                = var.type
+  external_address         = var.ext_ip != "" ? var.ext_ip : tolist(data.vcd_nsxt_edgegateway.orgEdge.subnet)[0].primary_ip
+  internal_address         = var.int_ip
+  dnat_external_port       = var.in_port != "" ? var.in_port : ""
+  snat_destination_address = var.dst_ip != "" ? var.dst_ip : ""
+  app_port_profile_id      = var.app_id != "" ? var.app_id : ""
 }
